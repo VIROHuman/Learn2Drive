@@ -256,7 +256,7 @@ router.get('/student/dashboard', (req: Request, res: Response) => {
 
 // GET /api/course/:id - Get course details with syllabus
 router.get('/course/:id', (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const syllabus = courseSyllabi[id];
 

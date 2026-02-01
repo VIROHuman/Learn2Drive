@@ -15,12 +15,26 @@ import CoursePlayer from './pages/student/CoursePlayer'
 import StudentRoster from './pages/student/Roster'
 import Certificates from './pages/student/Certificates'
 
+// Super Admin imports
+import RegisterSchoolPage from './pages/super-admin/RegisterSchoolPage'
+import SuperAdminLoginPage from './pages/super-admin/SuperAdminLoginPage'
+import SuperAdminLayout from './pages/super-admin/SuperAdminLayout'
+import SuperAdminDashboard from './pages/super-admin/SuperAdminDashboard'
+
 function App() {
   return (
     <Routes>
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/register-school" element={<RegisterSchoolPage />} />
+
+      {/* Super Admin routes */}
+      <Route path="/super-admin/login" element={<SuperAdminLoginPage />} />
+      <Route path="/super-admin" element={<SuperAdminLayout />}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<SuperAdminDashboard />} />
+      </Route>
 
       {/* Admin routes */}
       <Route path="/admin" element={<AdminLayout />}>
@@ -45,3 +59,4 @@ function App() {
 }
 
 export default App
+

@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import adminRoutes from './routes/admin';
 import studentRoutes from './routes/student';
+import superAdminRoutes from './routes/super-admin';
 
 dotenv.config();
 
@@ -33,6 +34,9 @@ app.use('/api', adminRoutes);
 
 // Student routes
 app.use('/api', studentRoutes);
+
+// Super Admin routes
+app.use('/api', superAdminRoutes);
 
 // Start server
 app.listen(PORT, () => {
