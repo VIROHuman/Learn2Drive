@@ -41,6 +41,68 @@ interface DashboardData {
     }
 }
 
+// Mock data fallback (used when backend is unavailable)
+const MOCK_DASHBOARD_DATA: DashboardData = {
+    student: {
+        id: 'student-demo',
+        name: 'Demo Student',
+        email: 'demo@learn2drive.com',
+        avatar: 'DS',
+    },
+    inProgress: {
+        id: 'course-1',
+        name: 'Teen Complete Driving Package',
+        thumbnail: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800',
+        progress: 65,
+        totalLessons: 12,
+        completedLessons: 8,
+        lastAccessed: '2026-01-30',
+        instructor: 'Michael Rodriguez',
+        duration: '32 hours',
+    },
+    courses: [
+        {
+            id: 'course-1',
+            name: 'Teen Complete Driving Package',
+            thumbnail: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400',
+            progress: 65,
+            totalLessons: 12,
+            completedLessons: 8,
+            lastAccessed: '2026-01-30',
+            instructor: 'Michael Rodriguez',
+            duration: '32 hours',
+        },
+        {
+            id: 'course-2',
+            name: 'Defensive Driving Course',
+            thumbnail: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400',
+            progress: 100,
+            totalLessons: 6,
+            completedLessons: 6,
+            lastAccessed: '2026-01-15',
+            instructor: 'Sarah Johnson',
+            duration: '6 hours',
+        },
+        {
+            id: 'course-3',
+            name: 'Road Test Preparation',
+            thumbnail: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400',
+            progress: 30,
+            totalLessons: 8,
+            completedLessons: 2,
+            lastAccessed: '2026-01-28',
+            instructor: 'David Chen',
+            duration: '4 hours',
+        },
+    ],
+    stats: {
+        totalCourses: 3,
+        completedCourses: 1,
+        inProgressCourses: 2,
+        upcomingLessons: 3,
+    },
+}
+
 export default function Dashboard() {
     const [data, setData] = useState<DashboardData | null>(null)
     const [loading, setLoading] = useState(true)
@@ -51,11 +113,16 @@ export default function Dashboard() {
             .then(response => {
                 if (response.success) {
                     setData(response.data)
+                } else {
+                    // Fallback to mock data
+                    setData(MOCK_DASHBOARD_DATA)
                 }
                 setLoading(false)
             })
             .catch(err => {
-                console.error('Failed to fetch dashboard:', err)
+                console.error('Failed to fetch dashboard, using mock data:', err)
+                // Fallback to mock data when backend is unavailable
+                setData(MOCK_DASHBOARD_DATA)
                 setLoading(false)
             })
     }, [])

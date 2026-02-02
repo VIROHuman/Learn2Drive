@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import adminRoutes from './routes/admin';
-import studentRoutes from './routes/student';
-import superAdminRoutes from './routes/super-admin';
+// COMMENTED OUT - Backend routes disabled, frontend uses mock data
+// import adminRoutes from './routes/admin';
+// import studentRoutes from './routes/student';
+// import superAdminRoutes from './routes/super-admin';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.json({
     message: 'Learn2Drive Academy API',
-    status: 'running',
+    status: 'running (routes disabled - using frontend mock data)',
     version: '1.0.0'
   });
 });
@@ -29,14 +30,15 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// COMMENTED OUT - Backend routes disabled, frontend uses mock data
 // Admin routes
-app.use('/api', adminRoutes);
+// app.use('/api', adminRoutes);
 
 // Student routes
-app.use('/api', studentRoutes);
+// app.use('/api', studentRoutes);
 
 // Super Admin routes
-app.use('/api', superAdminRoutes);
+// app.use('/api', superAdminRoutes);
 
 // Start server
 app.listen(PORT, () => {

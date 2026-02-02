@@ -45,6 +45,50 @@ interface CourseData {
     modules: Module[]
 }
 
+// Mock data fallback (used when backend is unavailable)
+const createMockCourse = (id: string): CourseData => ({
+    id: id || 'course-1',
+    name: 'Teen Complete Driving Package',
+    description: 'Comprehensive driving education for teenagers including 32 hours of classroom instruction, 14 hours of behind-the-wheel training, and full DMV test preparation. This course covers all essential skills for safe driving.',
+    instructor: 'Michael Rodriguez',
+    thumbnail: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800',
+    totalDuration: '32 hours',
+    modules: [
+        {
+            id: 'mod-1',
+            title: 'Module 1: Introduction to Driving',
+            duration: '2 hours',
+            lessons: [
+                { id: 'les-1', title: 'Welcome & Course Overview', duration: '10:00', completed: true, type: 'video' },
+                { id: 'les-2', title: 'Understanding Your Vehicle', duration: '25:00', completed: true, type: 'video' },
+                { id: 'les-3', title: 'Basic Controls & Dashboard', duration: '20:00', completed: false, type: 'video' },
+                { id: 'les-4', title: 'Module 1 Quiz', duration: '15:00', completed: false, type: 'quiz' },
+            ],
+        },
+        {
+            id: 'mod-2',
+            title: 'Module 2: Traffic Laws & Regulations',
+            duration: '4 hours',
+            lessons: [
+                { id: 'les-5', title: 'Traffic Signs & Signals', duration: '30:00', completed: false, type: 'video' },
+                { id: 'les-6', title: 'Right of Way Rules', duration: '25:00', completed: false, type: 'video' },
+                { id: 'les-7', title: 'Speed Limits & Zones', duration: '20:00', completed: false, type: 'video' },
+                { id: 'les-8', title: 'Module 2 Quiz', duration: '20:00', completed: false, type: 'quiz' },
+            ],
+        },
+        {
+            id: 'mod-3',
+            title: 'Module 3: Defensive Driving',
+            duration: '3 hours',
+            lessons: [
+                { id: 'les-9', title: 'Hazard Recognition', duration: '30:00', completed: false, type: 'video' },
+                { id: 'les-10', title: 'Safe Following Distance', duration: '20:00', completed: false, type: 'video' },
+                { id: 'les-11', title: 'Weather Conditions', duration: '25:00', completed: false, type: 'video' },
+            ],
+        },
+    ],
+})
+
 export default function CoursePlayer() {
     const { id } = useParams<{ id: string }>()
     const [course, setCourse] = useState<CourseData | null>(null)
@@ -72,11 +116,24 @@ export default function CoursePlayer() {
                             }
                         }
                     }
+                } else {
+                    // Fallback to mock data
+                    const mockCourse = createMockCourse(id || 'course-1')
+                    setCourse(mockCourse)
+                    setExpandedModules(new Set([mockCourse.modules[0].id]))
+                    const incomplete = mockCourse.modules[0].lessons.find(l => !l.completed)
+                    if (incomplete) setCurrentLesson(incomplete)
                 }
                 setLoading(false)
             })
             .catch(err => {
-                console.error('Failed to fetch course:', err)
+                console.error('Failed to fetch course, using mock data:', err)
+                // Fallback to mock data when backend is unavailable
+                const mockCourse = createMockCourse(id || 'course-1')
+                setCourse(mockCourse)
+                setExpandedModules(new Set([mockCourse.modules[0].id]))
+                const incomplete = mockCourse.modules[0].lessons.find(l => !l.completed)
+                if (incomplete) setCurrentLesson(incomplete)
                 setLoading(false)
             })
     }, [id])

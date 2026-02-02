@@ -338,7 +338,7 @@ export default function HomePage() {
                             </Button>
                         </a>
                         <a href="tel:+1234567890">
-                            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8">
+                            <Button size="lg" variant="outline" className="bg-white text-slate-900 hover:bg-slate-100 border-white text-lg px-8">
                                 <Phone className="mr-2 h-5 w-5" />
                                 Call Us Now
                             </Button>
